@@ -151,7 +151,7 @@ def linear_ggrad(gout, ins, theta_1, theta_0):
     lgrad_t1, lgrad_t0, lgrad_ins = linear_lgrad(ins, theta_1, theta_0)
     
     ggrad_theta_1 = gout.T @ lgrad_t1
-    ggrad_theta_0 =  gout.sum(dim=0, keepdim=True)
+    ggrad_theta_0 = (gout * lgrad_t0).sum(dim=0, keepdim=True)
     ggrad_ins = gout @ lgrad_ins
     
     return(ggrad_theta_1, ggrad_theta_0, ggrad_ins)
@@ -172,7 +172,8 @@ def relu_lgrad_scalar(z):
     """
     if z > 0:
         return torch.tensor(1)
-    else: return torch.tensor(0)
+    else: 
+        return torch.tensor(0)
 
 
 def relu_ggrad_scalar(gout, z):
